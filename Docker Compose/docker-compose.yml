@@ -1,0 +1,22 @@
+version: "3"
+services:
+  db:
+    image: mlopsdb:1.0
+    command: --secure-file-priv=/tmp/
+    ports:
+     - 3306:3306
+  builder:
+    image: mlopsbuilder:1.0
+    command: tail -f /dev/null
+    volumes:
+      - type: bind
+        source: ..\Dockerfiles\python
+        target: /shared
+  api:
+    image: mlopsapi:1.0
+    volumes:
+      - type: bind
+        source: ..\Dockerfiles\python
+        target: /app
+    ports:
+     - 8086:5000
